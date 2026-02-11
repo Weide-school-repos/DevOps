@@ -1,0 +1,42 @@
+steps week 1:
+
+    1.2 Node Application:
+        step 1: npm install -g npx (install npx)
+        step 2: npm install -g express-generator (install express-generator)
+        step 3: npx express-generator (create a node project)
+        step 4: npm install (install the packages)
+        step 5: npm start (starts localhost)
+
+    1.3 Database
+        step 1: install MongoDb (https://www.mongodb.com/try/download/community?tck=docs_server)
+        step 2: docker run --name mongodb -p 27017:27017 -d mongo:latest or docker start mongodb (start a docker container for db)
+        step 3: npm install --save-dev mongodb (install mongo client)
+        step 4: mkdir services ;code services/database.js; (make folder and file. Get content from course)
+        step 5: edit user with code from course
+        step 6: npm start (test http://localhost:3000/users should be [])
+
+    1.4 Tests 
+        step 1: npm install --save-dev jest supertest 
+        step 2: mkdir _tests_/routes ; code _tests_/routes/users.test.js (get content from course)
+        step 3: add to scripts "test": "jest"
+        step 4: add jest environment (content from course)
+        step 5: npm test
+
+    1.5 Code analyse
+        step 1: npm install eslint --save-dev
+        step 2: npx eslint --init (take json not js)
+        step 3: add  "extends": "eslint:recommended" to .eslintrc.json
+        step 4: add to script "lint": "npx eslint ."
+        step 5: npm run lint
+        step 6: solve error
+    
+    1.6 OmgevingVariabelen 
+        step 1: code .env
+        step 2: add MONGO_URL=mongodb://localhost:27017
+                    DB_NAME=myapp
+        step 3: npm install -D dotenv
+        step 4: npm install -D nodemon
+        step 5: npm run dev
+        step 6: npm install -D @shelf/jest-mongodb -dev
+        step 7: add "preset": "@shelf/jest-mongodb" 
+
