@@ -41,5 +41,5 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: ./week1
-          fail-under: 80
-          github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+          threshold: 80 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
