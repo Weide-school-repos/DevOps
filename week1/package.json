@@ -11,6 +11,9 @@
   "jest": {
     "preset": "@shelf/jest-mongodb",
     "testEnvironment": "node",
+    "coverageReporters": [
+      "json-summary"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
