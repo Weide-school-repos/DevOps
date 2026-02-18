@@ -40,3 +40,4 @@ steps week 1:
         step 6: npm install -D @shelf/jest-mongodb -dev
         step 7: add "preset": "@shelf/jest-mongodb" 
 
+[![Node.js CI](https://github.com/Weide-school-repos/DevOps/actions/workflows/node.js.yml/badge.svg?branch=github-action)](https://github.com/Weide-school-repos/DevOps/actions/workflows/node.js.yml)
