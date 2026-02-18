@@ -5,9 +5,12 @@ on:
     # paths: ["api/**"]
   pull_request:
     branches: ["main"]
+    
 permissions:
   contents: read
   checks: write
+  pull-requests: write
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,4 +41,4 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: ./week1
-          publish: false
+          fail-under: 80
