@@ -34,6 +34,7 @@ jobs:
       
   coverage:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' 
     defaults:
       run:
         working-directory: week1
