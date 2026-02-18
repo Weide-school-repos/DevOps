@@ -11,6 +11,7 @@
   "jest": {
     "preset": "@shelf/jest-mongodb",
     "testEnvironment": "node",
+    "collectCoverage": true,
     "coverageReporters": [
       "json-summary"
     ],
