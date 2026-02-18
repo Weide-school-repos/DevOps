@@ -42,4 +42,4 @@ jobs:
         with:
           working-directory: ./week1
           threshold: 80 
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
