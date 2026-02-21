@@ -1,0 +1,19 @@
+Opdrachten:
+
+
+    2.1 Main branch protect:
+        - ga naar de repo 
+        - ga in de repo naar settings
+        - ga naar rule set
+        - maak de rule aan
+
+    2.2 Testing:
+        - ga naar de repo
+        - ga in de repo naar actions
+        - maak een workflow
+
+    2.3 Linting:
+        - voeg linting toe in de workflow .yml
+
+    2.4 badges:
+        - niet gedaan :)
