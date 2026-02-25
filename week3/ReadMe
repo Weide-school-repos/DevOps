@@ -1,0 +1,53 @@
+Opdrachten:
+
+
+        3.1: Docker startup:
+
+            - install docker with https://docs.docker.com/get-docker/
+            - go to docker hub and make an account
+
+        3.2 Mongo in Docker:
+
+            - search the docker hub for the official mongo container and download the image
+            - start the mongo container with a custom name and port
+            - check if the proces is running with docker ps
+            - connenct to the database with MongoDB Compass
+
+        3.3 API in Docker
+
+            - mkdir API; code API/Dockerfile
+            - copy week1 into api folder
+            - expand dockerfile with base NodeJs image, symlink code, run npm install, env variables, port and run nmp start
+            - create the docker image with docker build
+            - run docker compose up
+
+        3.4 Mongoverbinding
+
+            - stop the containers: docker compose down
+            - create a network inside docker: docker network create devOps-network
+            - run the mongo container inside network: docker run -d `
+                                                        --name mijn-mongo `
+                                                        --network devOps-network `
+                                                        -p 27017:27017 `
+                                                        -e MONGO_INITDB_ROOT_USERNAME=admin `
+                                                        -e MONGO_INITDB_ROOT_PASSWORD=wachtwoord `
+                                                        mongo:latest
+
+            - update the API .Env:          DB_HOST=mijn-mongo
+                                            DB_PORT=27017
+                                            DB_USER=admin
+                                            DB_PASS=wachtwoord
+            - build the api container: cd api; docker build -t mijn-api .
+
+            - run the api container in the network: docker run -d `
+                                                        --name mijn-api `
+                                                        --network devOps-network `
+                                                        -p 3000:3000 `
+                                                        -e DB_HOST=mijn-mongo `
+                                                        -e DB_PORT=27017 `
+                                                        -e DB_USER=admin `
+                                                        -e DB_PASS=wachtwoord `
+                                                        mijn-api
+
+            - ping the mongodb: docker exec -it mijn-api bash
+                                ping mijn-mongo

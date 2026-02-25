@@ -1,0 +1,22 @@
+services:
+
+  mongodb:
+    image: mongo
+    container_name: week3-mongodb
+    ports:
+      - "3008:3008"
+    volumes:
+      - ./data:/data/db
+
+  api:
+    image: week3-api:latest
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    container_name: week3-api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./API:/app
+    depends_on:
+      - mongodb
