@@ -12,7 +12,6 @@ const client = new MongoClient(url);
 
 
 const db = client.db(dbName);
-//testing
 
 
 module.exports = {
