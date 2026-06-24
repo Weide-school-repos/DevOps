@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "test": "jest",
     "lint": "npx eslint .",
-    "dev": "nodemon -r dotenv/config ./bin/www"
+    "dev": "nodemon --legacy-watch -r dotenv/config ./bin/www"
   },
   "dependencies": {
     "@shelf/jest-mongodb": "^6.0.2",
@@ -28,6 +28,7 @@
     "globals": "^17.6.0",
     "jest": "^30.4.2",
     "mongodb": "^7.2.0",
+    "nodemon": "^3.1.14",
     "supertest": "^7.2.2"
   },
   "jest": {

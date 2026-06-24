@@ -1,0 +1,55 @@
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: mongo-dev
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: geheim123
+      MONGO_INITDB_DATABASE: weekapp
+    volumes:
+      - ./mongo-data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+  api:
+    build:
+      context: ./week1
+      dockerfile: Dockerfile
+    container_name: api-dev
+    restart: always
+    environment:
+      PORT: 12345
+      MONGO_URL: mongodb://admin:geheim123@mongo:27017/weekapp?authSource=admin
+    ports:
+      - "3000:12345"
+    volumes:
+      - ./week1:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-dev
+    restart: always
+    environment:
+      API_URL: http://localhost:3000
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
