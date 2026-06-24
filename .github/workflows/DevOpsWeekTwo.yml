@@ -35,8 +35,13 @@ jobs:
         run: npm run build --if-present
 
       - name: Run Tests
+        if: github.event_name == 'pull_request'
         uses: ArtiomTr/jest-coverage-report-action@v2.3.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ./week1
           threshold: 80
+
+      - name: Run Tests (push)
+        if: github.event_name != 'pull_request'
+        run: npm test
