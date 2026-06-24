@@ -65,3 +65,12 @@ jobs:
       - name: Run Tests (push)
         if: github.event_name != 'pull_request'
         run: npm test
+
+  linting:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./week1
+    steps:
+    
