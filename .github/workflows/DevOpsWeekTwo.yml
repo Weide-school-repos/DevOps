@@ -1,0 +1,102 @@
+name: DevOpsWeekTwo CI
+
+on:
+  push:
+    paths:
+      - 'week1/**'
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./week1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+          cache-dependency-path: week1/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --if-present
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./week1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+          cache-dependency-path: week1/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Tests
+        if: github.event_name == 'pull_request'
+        uses: ArtiomTr/jest-coverage-report-action@v2.3.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: ./week1
+          threshold: 80
+
+      - name: Run Tests (push)
+        if: github.event_name != 'pull_request'
+        run: npm test
+
+  linting:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: ./week1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+          cache-dependency-path: week1/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npx eslint . --format json --output-file eslint_report.json
+        continue-on-error: true
+
+      - name: Annotate ESLint results
+        uses: ataylorme/eslint-annotate-action@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          report-json: week1/eslint_report.json
+          post-comment: true
+
+    
