@@ -4,6 +4,12 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,3 +30,10 @@ jobs:
       working-directory: week1
     - run: npm test
       working-directory: week1
+
+    - name: Jest coverage report
+      if: matrix.node-version == '22.x'
+      uses: ArtiomTr/jest-coverage-report-action@v2.3.1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: week1
