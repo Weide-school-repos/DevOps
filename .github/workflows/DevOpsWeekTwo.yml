@@ -69,6 +69,9 @@ jobs:
   linting:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
     defaults:
       run:
         working-directory: ./week1
@@ -86,16 +89,14 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint -- --format json --output-file reports/lint.json
+        run: npx eslint . --format json --output-file eslint_report.json
         continue-on-error: true
 
-      - name: ESLint Report
-        uses: ldiego73/eslint-report-action@v1.1
+      - name: Annotate ESLint results
+        uses: ataylorme/eslint-annotate-action@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          report: week1/reports/lint.json
-          title: ESLint Report
-          view-rules: true
-          fail-on-warning: false
-          total-problems: 100
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          report-json: week1/eslint_report.json
+          post-comment: true
+
     
