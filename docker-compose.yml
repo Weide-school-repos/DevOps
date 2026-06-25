@@ -13,6 +13,19 @@ services:
     networks:
       - app-network
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-dev
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: geheim123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+
   api:
     build:
       context: ./week1
@@ -22,6 +35,7 @@ services:
     environment:
       PORT: 12345
       MONGO_URL: mongodb://admin:geheim123@mongo:27017/weekapp?authSource=admin
+      RABBITMQ_URL: amqp://admin:geheim123@rabbitmq:5672
     ports:
       - "3000:12345"
     volumes:
@@ -29,6 +43,7 @@ services:
       - /app/node_modules
     depends_on:
       - mongo
+      - rabbitmq
     networks:
       - app-network
 
