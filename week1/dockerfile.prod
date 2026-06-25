@@ -1,0 +1,24 @@
+# Vaste Node-versie, niet 'latest'
+FROM node:20.11-alpine
+
+# Werkdirectory in de container
+WORKDIR /app
+
+# Eerst alleen package.json(.lock) kopiëren voor betere caching
+COPY package*.json ./
+
+# Dependencies installeren
+RUN npm install
+
+# Rest van de code kopiëren
+COPY . .
+
+# Omgevingsvariabelen (PORT = poort BINNEN de container)
+ENV PORT=12345
+ENV MONGO_URL=mongodb://host.docker.internal:27018
+
+# Poort die de container exposed (documentatie/intentie)
+EXPOSE 12345
+
+# Startcommando
+CMD ["npm", "start"]
