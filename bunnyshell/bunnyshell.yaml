@@ -1,0 +1,102 @@
+kind: Environment
+name: DevOps
+type: primary
+urlHandle: r4xcjh
+components:
+    -
+        kind: Application
+        name: api
+        gitRepo: 'https://github.com/Weide-school-repos/DevOps.git'
+        gitBranch: main
+        gitApplicationPath: week1
+        dockerCompose:
+            build:
+                context: ./week1
+                dockerfile: Dockerfile
+            environment:
+                MONGO_URL: 'mongodb://admin:geheim123@mongo:27017/weekapp?authSource=admin'
+                RABBITMQ_URL: 'amqp://admin:geheim123@rabbitmq:5672'
+                PORT: '12345'
+            ports:
+                - '3000:12345'
+            restart: always
+        resources:
+            limits:
+                cpu: '500m'
+                memory: '512Mi'
+            requests:
+                cpu: '100m'
+                memory: '256Mi'
+        hosts:
+            -
+                hostname: 'api-{{ env.base_domain }}'
+                path: /
+                servicePort: 3000
+    -
+        kind: Application
+        name: frontend
+        gitRepo: 'https://github.com/Weide-school-repos/DevOps.git'
+        gitBranch: main
+        gitApplicationPath: frontend
+        dockerCompose:
+            build:
+                context: ./frontend
+                dockerfile: Dockerfile
+            environment:
+                API_URL: 'http://localhost:3000'
+            ports:
+                - '80:80'
+            restart: always
+        resources:
+            limits:
+                cpu: '300m'
+                memory: '256Mi'
+            requests:
+                cpu: '100m'
+                memory: '128Mi'
+        hosts:
+            -
+                hostname: 'frontend-{{ env.base_domain }}'
+                path: /
+                servicePort: 80
+    -
+        kind: Database
+        name: mongo
+        dockerCompose:
+            environment:
+                MONGO_INITDB_DATABASE: weekapp
+                MONGO_INITDB_ROOT_PASSWORD: geheim123
+                MONGO_INITDB_ROOT_USERNAME: admin
+            image: 'mongo:7.0'
+            restart: always
+        resources:
+            limits:
+                cpu: '500m'
+                memory: '512Mi'
+            requests:
+                cpu: '100m'
+                memory: '256Mi'
+    -
+        kind: Service
+        name: rabbitmq
+        dockerCompose:
+            image: 'rabbitmq:3-management'
+            environment:
+                RABBITMQ_DEFAULT_USER: admin
+                RABBITMQ_DEFAULT_PASS: geheim123
+            ports:
+                - '5672:5672'
+                - '15672:15672'
+            restart: always
+        resources:
+            limits:
+                cpu: '500m'
+                memory: '512Mi'
+            requests:
+                cpu: '100m'
+                memory: '256Mi'
+        hosts:
+            -
+                hostname: 'rabbitmq-{{ env.base_domain }}'
+                path: /
+                servicePort: 15672
