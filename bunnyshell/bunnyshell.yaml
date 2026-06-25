@@ -20,13 +20,14 @@ components:
             ports:
                 - '3000:12345'
             restart: always
-        resources:
-            limits:
-                cpu: '500m'
-                memory: '512Mi'
-            requests:
-                cpu: '100m'
-                memory: '256Mi'
+            deploy:
+                resources:
+                    limits:
+                        cpus: '0.3'
+                        memory: '512MiB'
+                    reservations:
+                        cpus: '0.1'
+                        memory: '256MiB'
         hosts:
             -
                 hostname: 'api-{{ env.base_domain }}'
@@ -47,13 +48,14 @@ components:
             ports:
                 - '80:80'
             restart: always
-        resources:
-            limits:
-                cpu: '300m'
-                memory: '256Mi'
-            requests:
-                cpu: '100m'
-                memory: '128Mi'
+            deploy:
+                resources:
+                    limits:
+                        cpus: '0.2'
+                        memory: '256MiB'
+                    reservations:
+                        cpus: '0.05'
+                        memory: '128MiB'
         hosts:
             -
                 hostname: 'frontend-{{ env.base_domain }}'
@@ -69,13 +71,14 @@ components:
                 MONGO_INITDB_ROOT_USERNAME: admin
             image: 'mongo:7.0'
             restart: always
-        resources:
-            limits:
-                cpu: '500m'
-                memory: '512Mi'
-            requests:
-                cpu: '100m'
-                memory: '256Mi'
+            deploy:
+                resources:
+                    limits:
+                        cpus: '0.25'
+                        memory: '512MiB'
+                    reservations:
+                        cpus: '0.1'
+                        memory: '256MiB'
     -
         kind: Service
         name: rabbitmq
@@ -88,13 +91,14 @@ components:
                 - '5672:5672'
                 - '15672:15672'
             restart: always
-        resources:
-            limits:
-                cpu: '500m'
-                memory: '512Mi'
-            requests:
-                cpu: '100m'
-                memory: '256Mi'
+            deploy:
+                resources:
+                    limits:
+                        cpus: '0.15'
+                        memory: '512MiB'
+                    reservations:
+                        cpus: '0.05'
+                        memory: '256MiB'
         hosts:
             -
                 hostname: 'rabbitmq-{{ env.base_domain }}'
